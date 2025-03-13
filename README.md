@@ -74,7 +74,3 @@ Here are potential improvements that can be made to the project:
 - Inject user object in the auth guard to the request body so no need to pass userIds in the requests and user can only see and add own data.
 - Add rate limiting to protect against abuse.
 - Improve error handling with a global exception filter.
-
-```
-
-```
