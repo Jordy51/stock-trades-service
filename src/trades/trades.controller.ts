@@ -25,7 +25,10 @@ export class TradesController {
 
   @Post()
   create(@Body() createTradeDto: CreateTradeDto) {
-    return this.tradesService.create(createTradeDto);
+    return this.tradesService.create({
+      ...createTradeDto,
+      userId: createTradeDto.user_id,
+    });
   }
 
   @Get()

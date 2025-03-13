@@ -20,7 +20,9 @@ export class TradesService {
     return trade;
   }
 
-  async create(createTradeDto: CreateTradeDto) {
+  async create(
+    createTradeDto: Omit<CreateTradeDto, 'user_id'> & { userId: number },
+  ) {
     const timestamp = new Date();
     const savedOrder = await this.tradeRepository.createAndSave({
       ...createTradeDto,
