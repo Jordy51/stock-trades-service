@@ -7,12 +7,19 @@ import {
   Param,
   Delete,
   Put,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
 import { TradesService } from './trades.service';
 import { CreateTradeDto } from './dto/create-trade.dto';
-import { UpdateTradeDto } from './dto/update-trade.dto';
+import { TradeType } from './entities/trade.entity';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { ApiBearerAuth, ApiSecurity } from '@nestjs/swagger';
 
 @Controller('trades')
+@ApiBearerAuth()
+@ApiSecurity('api-key')
+@UseGuards(JwtAuthGuard)
 export class TradesController {
   constructor(private readonly tradesService: TradesService) {}
 
@@ -22,27 +29,27 @@ export class TradesController {
   }
 
   @Get()
-  findAll() {
-    return this.tradesService.findAll();
+  findAll(@Query('type') type?: TradeType, @Query('user_id') userId?: string) {
+    return this.tradesService.findAll({ type, userId });
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.tradesService.findOne(id);
+    return this.tradesService.findOne(+id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.tradesService.remove(id);
+    return this.tradesService.doNotAllow(+id);
   }
 
   @Put(':id')
-  replace(@Param('id') id: string, @Body() replaceTradeDto: CreateTradeDto) {
-    return this.tradesService.update(id, replaceTradeDto);
+  replace(@Param('id') id: string) {
+    return this.tradesService.doNotAllow(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTradeDto: UpdateTradeDto) {
-    return this.tradesService.update(id, updateTradeDto);
+  update(@Param('id') id: string) {
+    return this.tradesService.doNotAllow(+id);
   }
 }
