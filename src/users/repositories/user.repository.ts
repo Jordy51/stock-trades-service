@@ -27,6 +27,6 @@ export class UserRepository extends Repository<User> {
       throw new Error('Order not found');
     }
     order.refreshToken = refreshToken;
-    return this.save(order);
+    await this.save(order);
   }
 }

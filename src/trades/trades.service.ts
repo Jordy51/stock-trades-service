@@ -30,7 +30,7 @@ export class TradesService {
   }
 
   findAll(ctx: { type?: TradeType; userId?: string }) {
-    return `This action returns all trades`;
+    return this.tradeRepository.findAll(ctx);
   }
 
   findOne(id: number) {
